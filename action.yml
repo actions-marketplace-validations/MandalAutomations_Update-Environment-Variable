@@ -1,0 +1,33 @@
+name: "Update Environment Variable"
+author: "evanallen13"
+description: "Action to update environment variable"
+
+branding:
+  icon: 'play'
+  color: 'purple'
+
+inputs:
+  Name:
+    description: "Name of variable"
+    required: true
+
+  Value:
+    description: "Value of variable"
+    required: true
+
+  RepoId:
+    description: "Repositoy Id can be found using github.repository_id"
+    required: true
+
+  EnvironmentName:
+    description: "Name of the environment to update"
+    required: true
+
+  Token:
+    description: "Pat Token"
+    required: true
+
+runs:
+  using: node20
+  main: 'dist/index.js'
+  
