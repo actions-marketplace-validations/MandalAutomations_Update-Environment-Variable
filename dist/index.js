@@ -9894,6 +9894,19 @@ const createEnvironmentVariable = async (value = value) => {
     })
 }
 
+const existsEnvironmentVariable = async () => {
+    let exists = false;
+
+    try {
+        const response = await getEnvironmentVariable()
+        exists = (response.status === 200) ? true : false
+    } catch (error) {
+        exists = false
+    }
+
+    return exists
+}
+
 const run = async () => {
     try {
         const exists = await existsEnvironmentVariable();
