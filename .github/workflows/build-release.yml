@@ -1,0 +1,66 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  MAJOR: ${{ vars.MAJOR }}
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: LS
+        run: |
+          cat action.yml
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Setup Git
+        run: |
+          git config user.name evanallen13
+          git config user.email evanallen12@gmail.com
+          git checkout -b release/v${{ vars.MAJOR }}
+
+      - name: npm install and build
+        run: |
+          npm install
+          npm run build
+          ls -la
+
+      - name: Create Release Branch
+        run: |
+          git add .
+          git commit -m "Release v${{ vars.MAJOR }}"
+          git push origin release/v${{ vars.MAJOR }}
+      
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }} 
+        with:
+          tag_name: v${{ env.MAJOR }}
+          release_name: Release v${{ env.MAJOR }}
+          body: |
+            Changes in this Release
+          draft: false
+          prerelease: false
+      
+      - name: "Increment Major"
+        uses: action-pack/increment@v2
+        with:
+          name: 'MAJOR'
+          token: ${{ secrets.PAT_TOKEN }}
