@@ -18,7 +18,7 @@ const getEnvironmentVariable = async () => {
     })
 }
 
-const updateEnvironmentVariable = async (value = value) => {
+const updateEnvironmentVariable = async () => {
 
     let url = `PATCH /repositories/${repoId}/environments/${environmentName}/variables/${name}`
 
@@ -28,7 +28,7 @@ const updateEnvironmentVariable = async (value = value) => {
     })
 }
 
-const createEnvironmentVariable = async (value = value) => {
+const createEnvironmentVariable = async (value) => {
 
     let url = `POST /repositories/${repoId}/environments/${environmentName}/variables`
 
@@ -58,7 +58,7 @@ const run = async () => {
         if (exists) {
             await updateEnvironmentVariable();
         } else {
-            await createEnvironmentVariable();
+            await createEnvironmentVariable((1).toString())
         }
     } catch (error) {
         setFailed(error.message);
