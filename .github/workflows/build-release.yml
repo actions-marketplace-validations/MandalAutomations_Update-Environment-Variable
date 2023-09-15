@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -58,6 +59,15 @@ jobs:
             Changes in this Release
           draft: false
           prerelease: false
+      
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com/
+      - run: npm ci
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.PAT_TOKEN}}
       
       - name: "Increment Major"
         uses: action-pack/increment@v2
