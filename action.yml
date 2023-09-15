@@ -11,6 +11,10 @@ inputs:
     description: "Name of variable"
     required: true
 
+  Value:
+    description: "Value of variable"
+    required: true
+
   RepoId:
     description: "Repositoy Id can be found using github.repository_id"
     required: true
