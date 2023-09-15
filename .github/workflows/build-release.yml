@@ -60,14 +60,15 @@ jobs:
           draft: false
           prerelease: false
       
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-          registry-url: https://npm.pkg.github.com/
-      - run: npm ci
-      - run: npm publish
+      - name: Upload Release Asset  
+        uses: actions/upload-release-asset@v1
         env:
-          NODE_AUTH_TOKEN: ${{secrets.PAT_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }} 
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}  
+          asset_path: ./dist/index.js
+          asset_name: index.js
+          asset_content_type: application/javascript
       
       - name: "Increment Major"
         uses: action-pack/increment@v2
